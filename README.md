@@ -6,6 +6,8 @@ GitHub Actions CI, and issue/PR templates.
 
 It ships with a small working example package, `mypackage`, which turns text
 into URL-safe slugs, so every tool has real code to check from the first commit.
+The `web/` folder holds a browser playground for that package; see
+[web/README.md](web/README.md). Delete it if your project has no web front end.
 
 ## Layout
 
