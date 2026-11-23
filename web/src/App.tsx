@@ -42,9 +42,11 @@ function pythonSnippet(text: string, separator: string, maxLength: number | null
 }
 
 function cliSnippet(text: string, separator: string, maxLength: number | null) {
-  const parts = ["slugkit", shellQuote(text)]
-  if (separator !== "-") parts.push("-s", shellQuote(separator))
-  if (maxLength !== null) parts.push("-m", String(maxLength))
+  const parts = ["slugkit"]
+  if (separator !== "-") parts.push(`--separator=${shellQuote(separator)}`)
+  if (maxLength !== null) parts.push(`--max-length=${maxLength}`)
+  if (text.startsWith("-")) parts.push("--")
+  parts.push(shellQuote(text))
   return parts.join(" ")
 }
 

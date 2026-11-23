@@ -24,7 +24,7 @@ dependencies = []
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
-    "ruff>=0.6",
+    "ruff>=0.17",
     "mypy>=1.11",
     "pre-commit>=3.8",
 ]
@@ -39,6 +39,9 @@ Issues = "https://github.com/ashnabashir/slugkit/issues"
 [tool.hatch.build.targets.wheel]
 packages = ["src/slugkit"]
 
+[tool.hatch.build.targets.sdist]
+include = ["/src", "/tests", "/README.md", "/CHANGELOG.md", "/LICENSE"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers --cov=slugkit --cov-report=term-missing"
@@ -49,7 +52,7 @@ fail_under = 90
 [tool.ruff]
 line-length = 100
 target-version = "py310"
-src = ["src", "tests"]
+src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
@@ -57,4 +60,4 @@ select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
 [tool.mypy]
 python_version = "3.10"
 strict = true
-files = ["src", "tests"]
+files = ["src", "tests", "scripts"]

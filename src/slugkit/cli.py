@@ -10,6 +10,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="slugkit",
         description="Turn text into a clean, URL-safe slug.",
+        epilog="Use -- before text that starts with a dash: slugkit -- '-draft title'",
     )
     parser.add_argument("text", nargs="*", help="text to slugify (reads stdin when omitted)")
     parser.add_argument("-s", "--separator", default="-", help="word separator (default: -)")
@@ -22,10 +23,18 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
-    lines = [" ".join(args.text)] if args.text else sys.stdin.read().splitlines()
-    try:
-        for line in lines:
-            print(slugify(line, separator=args.separator, max_length=args.max_length))
-    except ValueError as exc:
-        parser.error(str(exc))
+    if not args.separator:
+        parser.error("argument -s/--separator: must not be empty")
+    if args.max_length is not None and args.max_length < 1:
+        parser.error("argument -m/--max-length: must be a positive integer")
+
+    if args.text:
+        lines = [" ".join(args.text)]
+    elif sys.stdin is None or sys.stdin.isatty():
+        parser.error("no text given: pass it as arguments or pipe it on stdin")
+    else:
+        lines = sys.stdin.read().splitlines()
+
+    for line in lines:
+        print(slugify(line, separator=args.separator, max_length=args.max_length))
     return 0

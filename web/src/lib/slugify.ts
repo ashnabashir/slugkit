@@ -5,17 +5,7 @@ export interface SlugifyOptions {
   maxLength?: number | null
 }
 
-const NON_WORD = /[^a-z0-9]+/g
-
-function stripChars(value: string, chars: string, side: "both" | "end"): string {
-  let start = 0
-  let end = value.length
-  if (side === "both") {
-    while (start < end && chars.includes(value[start])) start++
-  }
-  while (end > start && chars.includes(value[end - 1])) end--
-  return value.slice(start, end)
-}
+const NON_WORD = /[^a-z0-9]+/
 
 export function slugify(text: string, { separator = "-", maxLength = null }: SlugifyOptions = {}) {
   if (!separator) throw new Error("Separator must not be empty.")
@@ -23,12 +13,16 @@ export function slugify(text: string, { separator = "-", maxLength = null }: Slu
     throw new Error("Max length must be a positive whole number.")
   }
 
-  // Python's str.strip(sep) removes any of sep's characters, so this does too.
   const ascii = text.normalize("NFKD").replace(/[\u0080-\uffff]/g, "")
-  let slug = stripChars(ascii.toLowerCase().replace(NON_WORD, () => separator), separator, "both")
+  const words = ascii.toLowerCase().split(NON_WORD).filter(Boolean)
 
-  if (maxLength !== null && slug.length > maxLength) {
-    slug = stripChars(slug.slice(0, maxLength), separator, "end")
+  if (maxLength === null) return words.join(separator)
+
+  let slug = ""
+  for (const word of words) {
+    const room = maxLength - slug.length - (slug ? separator.length : 0)
+    if (room <= 0) break
+    slug = slug ? `${slug}${separator}${word.slice(0, room)}` : word.slice(0, room)
   }
   return slug
 }
