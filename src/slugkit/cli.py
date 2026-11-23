@@ -2,13 +2,13 @@ import argparse
 import sys
 from collections.abc import Sequence
 
-from mypackage import __version__
-from mypackage.core import slugify
+from slugkit import __version__
+from slugkit.core import slugify
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="mypackage",
+        prog="slugkit",
         description="Turn text into a clean, URL-safe slug.",
     )
     parser.add_argument("text", nargs="*", help="text to slugify (reads stdin when omitted)")

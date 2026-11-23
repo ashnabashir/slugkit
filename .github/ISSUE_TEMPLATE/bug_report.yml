@@ -19,6 +19,6 @@ body:
     id: version
     attributes:
       label: Version
-      description: Output of `mypackage --version` and `python --version`.
+      description: Output of `slugkit --version` and `python --version`.
     validations:
       required: true

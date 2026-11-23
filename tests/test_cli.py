@@ -2,7 +2,7 @@ import io
 
 import pytest
 
-from mypackage.cli import main
+from slugkit.cli import main
 
 
 def test_arguments(capsys: pytest.CaptureFixture[str]) -> None:

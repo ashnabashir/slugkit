@@ -7,10 +7,21 @@ import re
 import sys
 from pathlib import Path
 
-OLD = "mypackage"
+OLD = "slugkit"
 ROOT = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {".git", ".venv", "venv", "__pycache__", ".mypy_cache", ".ruff_cache", ".pytest_cache"}
-TEXT_SUFFIXES = {".py", ".toml", ".md", ".yml", ".yaml", ".cfg", ".txt", ""}
+SKIP_DIRS = {
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".pytest_cache",
+    "node_modules",
+    "dist",
+    "build",
+}
+TEXT_SUFFIXES = {".py", ".toml", ".md", ".yml", ".yaml", ".cfg", ".txt", ".ts", ".tsx", ".html", ""}
 
 
 def main() -> int:
@@ -25,7 +36,10 @@ def main() -> int:
             continue
         if path.suffix not in TEXT_SUFFIXES or path.resolve() == Path(__file__).resolve():
             continue
-        text = path.read_text(encoding="utf-8")
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
         updated = re.sub(rf"(github\.com/[\w.-]+/){OLD}\b", rf"\g<1>{dist_name}", text)
         updated = updated.replace(OLD, new)
         if updated != text:

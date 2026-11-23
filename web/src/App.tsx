@@ -38,11 +38,11 @@ function pythonSnippet(text: string, separator: string, maxLength: number | null
   const args = [JSON.stringify(text)]
   if (separator !== "-") args.push(`separator=${JSON.stringify(separator)}`)
   if (maxLength !== null) args.push(`max_length=${maxLength}`)
-  return `from mypackage import slugify\n\nslugify(${args.join(", ")})`
+  return `from slugkit import slugify\n\nslugify(${args.join(", ")})`
 }
 
 function cliSnippet(text: string, separator: string, maxLength: number | null) {
-  const parts = ["mypackage", shellQuote(text)]
+  const parts = ["slugkit", shellQuote(text)]
   if (separator !== "-") parts.push("-s", shellQuote(separator))
   if (maxLength !== null) parts.push("-m", String(maxLength))
   return parts.join(" ")
@@ -84,7 +84,7 @@ export default function App() {
           </h1>
           <p className="mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
             Paste one title per line. Accents are flattened, punctuation is dropped, and every line
-            becomes a lowercase slug, exactly as the <code className="font-mono text-sm">mypackage</code>{" "}
+            becomes a lowercase slug, exactly as the <code className="font-mono text-sm">slugkit</code>{" "}
             Python library produces it.
           </p>
         </section>
@@ -260,7 +260,16 @@ export default function App() {
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-        Built on the <code className="font-mono">mypackage</code> Python project template.
+        Powered by{" "}
+        <a
+          href="https://github.com/ashnabashir/slugkit"
+          className="font-mono underline underline-offset-4 hover:text-foreground"
+          target="_blank"
+          rel="noreferrer"
+        >
+          slugkit
+        </a>
+        , an open-source Python library.
       </footer>
     </div>
   )

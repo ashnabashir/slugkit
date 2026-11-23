@@ -11,4 +11,4 @@ All notable changes to this project are documented here. The format follows
 ### Added
 
 - `slugify()` with custom separators and length limits.
-- `mypackage` command-line tool that reads arguments or stdin.
+- `slugkit` command-line tool that reads arguments or stdin.

@@ -1,65 +1,89 @@
-# Python project template
+# slugkit
 
-A ready-to-use structure for new Python projects: `src/` layout, packaging with
-`pyproject.toml`, tests with coverage, linting, type checking, pre-commit hooks,
-GitHub Actions CI, and issue/PR templates.
+[![CI](https://github.com/ashnabashir/slugkit/actions/workflows/ci.yml/badge.svg)](https://github.com/ashnabashir/slugkit/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-It ships with a small working example package, `mypackage`, which turns text
-into URL-safe slugs, so every tool has real code to check from the first commit.
-The `web/` folder holds a browser playground for that package; see
-[web/README.md](web/README.md). Delete it if your project has no web front end.
+Turn any text into clean, URL-safe slugs. Typed, dependency-free, and usable
+as a Python library, a command-line tool, or in the browser.
 
-## Layout
-
-```text
-.
-├── .github/
-│   ├── ISSUE_TEMPLATE/          # bug report and feature request forms
-│   ├── pull_request_template.md
-│   └── workflows/ci.yml         # lint + type check + tests on 3 OSes × 4 Pythons
-├── scripts/rename_package.py    # rename `mypackage` for a new project
-├── src/mypackage/               # the importable package
-│   ├── __init__.py
-│   ├── __main__.py              # `python -m mypackage`
-│   ├── cli.py
-│   ├── core.py
-│   └── py.typed                 # ships type hints to users
-├── tests/
-├── .pre-commit-config.yaml
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── LICENSE
-└── pyproject.toml               # metadata, dependencies, tool config
+```python
+>>> from slugkit import slugify
+>>> slugify("Café au lait: 10 recipes you'll love!")
+'cafe-au-lait-10-recipes-you-ll-love'
+>>> slugify("Hello World", separator="_")
+'hello_world'
+>>> slugify("hello wonderful world", max_length=6)
+'hello'
 ```
 
-## Start a new project from this template
+## Features
 
-1. Copy the template. On GitHub, mark the repository as a template, then use
-   **Use this template**. Or clone it and delete `.git`.
-2. Rename the package:
+- Flattens accents (`é` becomes `e`) and drops characters with no ASCII form.
+- Collapses punctuation and whitespace into a single separator, never leaving
+  one at either end.
+- Optional maximum length that never cuts off with a dangling separator.
+- Ships type hints (`py.typed`) and has no runtime dependencies.
+- Command-line tool that reads arguments or one title per line from stdin.
+- [Slug Playground](web/): a browser app with the same rules, checked against
+  the Python implementation.
 
-   ```bash
-   python scripts/rename_package.py my_project
-   ```
-
-3. Edit `description`, `authors` and `keywords` in `pyproject.toml`, replace the
-   code in `src/my_project/`, and update this README.
-
-## Run it locally
+## Install
 
 Requires Python 3.10 or newer.
 
 ```bash
+pip install git+https://github.com/ashnabashir/slugkit.git
+```
+
+## Command line
+
+```bash
+slugkit "Hello, World!"              # hello-world
+echo "Café au lait" | slugkit -s _   # cafe_au_lait
+slugkit "A very long title" -m 10    # a-very-lon
+slugkit --help
+```
+
+## Development
+
+```bash
+git clone https://github.com/ashnabashir/slugkit.git
+cd slugkit
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
+pre-commit install
 
-mypackage "Hello, World!"        # hello-world
-echo "Café au lait" | mypackage -s _   # cafe_au_lait
-
-pytest                           # tests with coverage
+pytest                               # tests with coverage
 ruff check . && ruff format --check .
 mypy
+```
+
+The playground lives in [`web/`](web/); see [web/README.md](web/README.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
+## Project layout
+
+```text
+.
+├── .github/                 # CI workflow, issue forms, PR template
+├── scripts/rename_package.py
+├── src/slugkit/             # the library and CLI
+├── tests/
+├── web/                     # Slug Playground (Vite + React)
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── pyproject.toml
+```
+
+### Use it as a starting point
+
+The repository is a GitHub template. Choose **Use this template**, then rename
+the package for your own project:
+
+```bash
+python scripts/rename_package.py my_project
 ```
 
 ## License

@@ -3,7 +3,7 @@ requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mypackage"
+name = "slugkit"
 version = "0.1.0"
 description = "Turn any text into clean, URL-safe slugs."
 readme = "README.md"
@@ -30,18 +30,18 @@ dev = [
 ]
 
 [project.scripts]
-mypackage = "mypackage.cli:main"
+slugkit = "slugkit.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/ashnabashir/mypackage"
-Issues = "https://github.com/ashnabashir/mypackage/issues"
+Homepage = "https://github.com/ashnabashir/slugkit"
+Issues = "https://github.com/ashnabashir/slugkit/issues"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/mypackage"]
+packages = ["src/slugkit"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-ra --strict-markers --cov=mypackage --cov-report=term-missing"
+addopts = "-ra --strict-markers --cov=slugkit --cov-report=term-missing"
 
 [tool.coverage.report]
 fail_under = 90

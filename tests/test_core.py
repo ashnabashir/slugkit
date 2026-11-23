@@ -1,6 +1,6 @@
 import pytest
 
-from mypackage import slugify
+from slugkit import slugify
 
 
 @pytest.mark.parametrize(

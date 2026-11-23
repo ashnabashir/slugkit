@@ -1,4 +1,4 @@
-// Mirrors src/mypackage/core.py so the playground and the Python package agree.
+// Mirrors src/slugkit/core.py so the playground and the Python package agree.
 
 export interface SlugifyOptions {
   separator?: string
